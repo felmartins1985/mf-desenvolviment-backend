@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
+// Microsoft.EntityFrameworkCore.SqlServer e Microsoft.EntityFrameworkCore.Tools e Microsoft.EntityFrameworkCore versao 6.0.19
 namespace mf_desenvolviment_backend.Models
 {
     [Table("Veiculos")]

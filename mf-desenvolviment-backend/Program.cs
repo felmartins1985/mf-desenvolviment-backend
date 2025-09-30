@@ -1,9 +1,13 @@
+using mf_desenvolviment_backend.Models;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.'
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); // Adiciona suporte para Razor Runtime Compilation versao 6.0.19 Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation
+builder.Services.AddDbContext<AppDbContext>(options=> options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); // Configurando o contexto do banco de dados para usar o SQL Server e a string de conexao padrao)
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
