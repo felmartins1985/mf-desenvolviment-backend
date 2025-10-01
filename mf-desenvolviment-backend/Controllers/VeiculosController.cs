@@ -34,5 +34,35 @@ namespace mf_desenvolviment_backend.Controllers
             }
             return View(veiculo);
         }
+
+        public async  Task<IActionResult> Edit(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            var veiculo = await _context.Veiculos.FindAsync(id);
+            if(veiculo == null)
+            {
+                return NotFound();
+            }
+            return View(veiculo);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Veiculo veiculo)
+        {
+            if(id != veiculo.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid) // verifica se os dados enviados no formulário são válidos
+            {
+                _context.Veiculos.Update(veiculo); // atualiza o veículo ao contexto do banco de dados
+                await _context.SaveChangesAsync(); // salva as alterações no banco de dados
+                return RedirectToAction("Index"); // redireciona para a ação Index, que exibe a lista de veículos
+            }
+            return View();
+        }
     }
 }
