@@ -71,5 +71,23 @@ namespace mf_desenvolviment_backend.Controllers
             var veiculo =  await _context.Veiculos.FindAsync(id);
             return View(veiculo);
         }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if(id == null) return NotFound();
+            var veiculo = await _context.Veiculos.FindAsync(id);
+            if(veiculo == null) return NotFound();
+            return View(veiculo);
+        }
+
+        [HttpPost, ActionName("Delete")]  // ActionName é usado para mapear o nome da ação do método para "Delete"
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            var veiculo = await _context.Veiculos.FindAsync(id);
+            if(veiculo == null) return NotFound();
+            _context.Veiculos.Remove(veiculo);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }
