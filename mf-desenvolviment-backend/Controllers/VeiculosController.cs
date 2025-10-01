@@ -18,5 +18,21 @@ namespace mf_desenvolviment_backend.Controllers
             var dados = await _context.Veiculos.ToListAsync(); // vou retornar todos os dados da tabela Veiculos
             return View(dados);
         }
+
+        public IActionResult Create() // serve para exibir o formulário de criação de um novo veículo
+        {
+            return View();
+        }
+        [HttpPost] // indica que esse método responde a requisições HTTP POST
+        public async  Task<IActionResult> Create(Veiculo veiculo)
+        {
+            if(ModelState.IsValid) // verifica se os dados enviados no formulário são válidos
+            {
+                _context.Veiculos.Add(veiculo); // adiciona o novo veículo ao contexto do banco de dados
+                await _context.SaveChangesAsync(); // salva as alterações no banco de dados
+                return RedirectToAction("Index"); // redireciona para a ação Index, que exibe a lista de veículos
+            }
+            return View(veiculo);
+        }
     }
 }
