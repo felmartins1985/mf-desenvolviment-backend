@@ -64,5 +64,12 @@ namespace mf_desenvolviment_backend.Controllers
             }
             return View();
         }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if(id == null) return NotFound();
+            var veiculo =  await _context.Veiculos.FindAsync(id);
+            return View(veiculo);
+        }
     }
 }
