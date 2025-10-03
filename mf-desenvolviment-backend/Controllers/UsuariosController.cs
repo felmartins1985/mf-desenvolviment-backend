@@ -26,6 +26,12 @@ namespace mf_desenvolviment_backend.Controllers
             return View(await _context.Usuarios.ToListAsync());
         }
 
+        // GET: Usuarios/Login
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Login(Usuario usuario)
         {
@@ -58,7 +64,6 @@ namespace mf_desenvolviment_backend.Controllers
             else
             {
                 ViewBag.Mensagem = "Usuário e/ou Senha inválidos";
-                return View();
             }
             return View();
         }
