@@ -59,13 +59,18 @@ namespace mf_desenvolviment_backend.Controllers
                     IsPersistent = true
                 };
                 await HttpContext.SignInAsync(principal, props);
-                return Redirect("/");
+                return RedirectToAction("/");
             }
             else
             {
                 ViewBag.Mensagem = "Usuário e/ou Senha inválidos";
             }
             return View();
+        }
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Login", "Usuarios");
         }
         // GET: Usuarios/Details/5
         public async Task<IActionResult> Details(int? id)
