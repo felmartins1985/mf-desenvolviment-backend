@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using mf_desenvolviment_backend.Models;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace mf_desenvolviment_backend.Controllers
 {
@@ -24,6 +26,42 @@ namespace mf_desenvolviment_backend.Controllers
             return View(await _context.Usuarios.ToListAsync());
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Login(Usuario usuario)
+        {
+            var dados = await _context.Usuarios.FindAsync(usuario.Id);
+            if (dados == null)
+            {
+                ViewBag.Mensagem = "Usuário e/ou Senha inválidos";
+                return View();
+            }
+            bool senhaOK = BCrypt.Net.BCrypt.Verify(usuario.Senha, dados.Senha);
+            if (senhaOK)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.Name, dados.Nome),
+                    new Claim(ClaimTypes.NameIdentifier, dados.Id.ToString()),
+                    new Claim(ClaimTypes.Role, dados.Perfil.ToString())
+                };
+                var usuarioIdentity = new ClaimsIdentity(claims, "login");
+                ClaimsPrincipal principal = new ClaimsPrincipal(usuarioIdentity);
+                var props = new AuthenticationProperties
+                {
+                    AllowRefresh = true,
+                    ExpiresUtc = DateTime.UtcNow.ToLocalTime().AddHours(8),
+                    IsPersistent = true
+                };
+                await HttpContext.SignInAsync(principal, props);
+                return Redirect("/");
+            }
+            else
+            {
+                ViewBag.Mensagem = "Usuário e/ou Senha inválidos";
+                return View();
+            }
+            return View();
+        }
         // GET: Usuarios/Details/5
         public async Task<IActionResult> Details(int? id)
         {
