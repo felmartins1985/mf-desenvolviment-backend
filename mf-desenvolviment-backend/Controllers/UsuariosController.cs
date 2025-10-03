@@ -38,7 +38,7 @@ namespace mf_desenvolviment_backend.Controllers
             var dados = await _context.Usuarios.FindAsync(usuario.Id);
             if (dados == null)
             {
-                ViewBag.Mensagem = "Usuário e/ou Senha inválidos";
+                ViewBag.Message = "Usuário e/ou Senha inválidos";
                 return View();
             }
             bool senhaOK = BCrypt.Net.BCrypt.Verify(usuario.Senha, dados.Senha);
@@ -59,7 +59,7 @@ namespace mf_desenvolviment_backend.Controllers
                     IsPersistent = true
                 };
                 await HttpContext.SignInAsync(principal, props);
-                return RedirectToAction("/");
+                return Redirect("/");
             }
             else
             {
