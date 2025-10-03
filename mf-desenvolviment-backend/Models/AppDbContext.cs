@@ -10,5 +10,7 @@ namespace mf_desenvolviment_backend.Models
         }
         public DbSet<Veiculo> Veiculos { get; set; } // propriedade que representa a tabela de veiculos no banco de dados
         // toda entidade nova que for criada é preciso inserir uma nova propriedade DbSet<>
+
+        public DbSet<Consumo> Consumos { get; set; } // propriedade que representa a tabela de consumos no banco de dados
     }
 }
